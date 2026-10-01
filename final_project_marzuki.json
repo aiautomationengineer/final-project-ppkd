@@ -1,0 +1,512 @@
+{
+  "name": "final project marzuki",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "Background : Bagian purchasing sering tertukar mengirimkan material ke lokasi proyek karena banyaknya lokasi proyek yang berjalan bersamaan. \n\nKenapa layak diotomasisasi: Meminimalisir kesalahan pengiriman material karena item material dan lokasi proyek dalam 1 tempat di Google Spreadsheet",
+        "height": 176,
+        "width": 448
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -624,
+        -208
+      ],
+      "id": "bdce77b9-5197-4eb2-9303-20e0ae55a7ec",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "operation": "sendAndWait",
+        "sendTo": "kanalmas08@gmail.com",
+        "subject": "PERMINTAAN PEMBELIAN MATERIAL PROYEK",
+        "message": "=🏗️ PERMINTAAN PEMBELIAN MATERIAL PROYEK\n\nProyek: {{ $('Kirim pesan ke Nama Peminta').item.json['Nama Proyek / Lokasi'] }}\n\nPeminta: {{ $('Kirim pesan ke Nama Peminta').item.json['Nama Peminta'] }}\n\nItem: {{ $('Kirim pesan ke Nama Peminta').item.json['Daftar Barang & Jumlah'] }}\n\nTotal Estimasi: {{ $('Kirim pesan ke Nama Peminta').item.json['Estimasi Biaya Total'] }}\n\nLevel Otorisasi: Project Manager (PM) \n\nApakah Anda ingin menyetujui pengadaan ini?",
+        "approvalOptions": {
+          "values": {
+            "approvalType": "double"
+          }
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        448,
+        -96
+      ],
+      "id": "c4784405-69f3-4386-afce-32b5cdc07b02",
+      "name": "Project Manager",
+      "webhookId": "e8de40a0-5e82-4c19-a82c-f11d47427f99",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "AAnnuBmtJWNXYAIC",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "gbjkt8805@gmail.com",
+        "subject": "=Buat PO Proyek  {{ $('Kirim pesan ke Nama Peminta').item.json['Nama Proyek / Lokasi'] }}",
+        "emailType": "text",
+        "message": "=Dear Team Purchasing, \n\nTolong buatkan Purchase Order untuk proyek {{ $('Kirim pesan ke Nama Peminta').item.json['Nama Proyek / Lokasi'] }} berupa {{ $('Kirim pesan ke Nama Peminta').item.json['Daftar Barang & Jumlah'] }} ke vendor langganan di wilayah proyek tersebut. \n\nRegards",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        1136,
+        32
+      ],
+      "id": "c680bb91-ddd4-4cb7-b915-bbb7cb596076",
+      "name": "email penugasan pembelian (Purchase Order)",
+      "webhookId": "bd1b5114-34c7-401e-b903-4d5398a41866",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "AAnnuBmtJWNXYAIC",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "sendAndWait",
+        "sendTo": "wetanmas1@gmail.com",
+        "subject": "=PERMINTAAN PEMBELIAN MATERIAL PROYEK  {{ $json['Nama Proyek / Lokasi'] }}",
+        "message": "=🏗️ PERMINTAAN PEMBELIAN MATERIAL PROYEK\n\nProyek: {{ $('Kirim pesan ke Nama Peminta').item.json['Nama Proyek / Lokasi'] }}\n\nPeminta: {{ $('Kirim pesan ke Nama Peminta').item.json['Nama Peminta'] }}\n\nItem: {{ $('Kirim pesan ke Nama Peminta').item.json['Daftar Barang & Jumlah'] }}\n\nTotal Estimasi: {{ $('Kirim pesan ke Nama Peminta').item.json['Estimasi Biaya Total'] }}\n\nLevel Otorisasi: Direktur Operasional \n\nApakah Anda ingin menyetujui pengadaan ini?",
+        "approvalOptions": {
+          "values": {
+            "approvalType": "double"
+          }
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        448,
+        96
+      ],
+      "id": "af6f8f03-e878-4edc-805c-8600e1ccff66",
+      "name": "Direktur Operasional",
+      "webhookId": "b3cdfe5c-d80a-4baf-bb71-e758d993d699",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "AAnnuBmtJWNXYAIC",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "formTitle": "Permintaan Pembelian",
+        "formDescription": "Otomatisasi Permintaan Pembelian (PR to PO Approval Routing)",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Nama Proyek / Lokasi"
+            },
+            {
+              "fieldLabel": "Nama Peminta"
+            },
+            {
+              "fieldLabel": "Kode Proyek"
+            },
+            {
+              "fieldLabel": "Daftar Barang & Jumlah"
+            },
+            {
+              "fieldLabel": "Estimasi Biaya Total",
+              "fieldType": "number",
+              "placeholder": "Isi tanpa tanda Rp, titik atau koma, contoh 7500000"
+            },
+            {
+              "fieldLabel": "Urgensi",
+              "fieldType": "radio",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "Normal"
+                  },
+                  {
+                    "option": "Mendesak"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.6,
+      "position": [
+        0,
+        0
+      ],
+      "id": "27dd1e84-9019-43c5-b623-a4cee851b76c",
+      "name": "Kirim pesan ke Nama Peminta",
+      "webhookId": "110ccd53-ef8b-4ef9-a131-361d22e30a62"
+    },
+    {
+      "parameters": {
+        "chatId": "8549449733",
+        "text": "=Dear {{ $('Kirim pesan ke Nama Peminta').item.json['Nama Peminta'] }}, Tolong turunkan Quantity {{ $('Kirim pesan ke Nama Peminta').item.json['Daftar Barang & Jumlah'] }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        896,
+        -144
+      ],
+      "id": "53188f5a-6bbe-48cc-bf96-b7b607102529",
+      "name": "Kirim pesan ke Nama Peminta1",
+      "webhookId": "376be39b-19e4-4cff-9c18-f8ed2a2339c1",
+      "credentials": {
+        "telegramApi": {
+          "id": "R2txeiB8uAKqEnAN",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "8549449733",
+        "text": "=Dear {{ $('Kirim pesan ke Nama Peminta').item.json['Nama Peminta'] }}, Tolong turunkan Quantity  {{ $('Kirim pesan ke Nama Peminta').item.json['Daftar Barang & Jumlah'] }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        896,
+        192
+      ],
+      "id": "5442aef4-cf95-4661-a2ad-38f2b0540c36",
+      "name": "Kirim pesan ke Nama Peminta2",
+      "webhookId": "c06f3598-0357-4992-bd43-fb9785344202",
+      "credentials": {
+        "telegramApi": {
+          "id": "R2txeiB8uAKqEnAN",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "09c7fa67-94b9-4359-9760-0f140755edad",
+              "leftValue": "={{ $json.data.approved }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        672,
+        -96
+      ],
+      "id": "60c762d4-01c7-43c8-a931-b2c854060287",
+      "name": "APPROVAL OR NOT"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "c8d18afe-a676-4293-9e5a-7a39fe394c42",
+              "leftValue": "={{ $json.data.approved }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        672,
+        96
+      ],
+      "id": "bd5c5506-df5f-420f-80aa-a7618ed6b9c0",
+      "name": "APPROVAL OR NOT1"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "91225c4d-c913-4ef5-9bbe-677da8481c8f",
+              "leftValue": "={{ $json['Estimasi Biaya Total'] }}",
+              "rightValue": 50000000,
+              "operator": {
+                "type": "number",
+                "operation": "lte"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        224,
+        0
+      ],
+      "id": "085cee2d-2943-4eda-bddc-62b4838ed0a5",
+      "name": "Nominal Pemesanan"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1kJ4SiFaw062HQof_tlmegsrPW_xKwcvM572Omi0hPv8",
+          "mode": "list",
+          "cachedResultName": "purchase_order",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1kJ4SiFaw062HQof_tlmegsrPW_xKwcvM572Omi0hPv8/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1kJ4SiFaw062HQof_tlmegsrPW_xKwcvM572Omi0hPv8/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "nama_item": "={{ $('Kirim pesan ke Nama Peminta').item.json['Daftar Barang & Jumlah'] }}",
+            "nama_proyek_lokasi": "={{ $('Kirim pesan ke Nama Peminta').item.json['Nama Proyek / Lokasi'] }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "nama_item",
+              "displayName": "nama_item",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "volume",
+              "displayName": "volume",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "satuan",
+              "displayName": "satuan",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "harga_satuan",
+              "displayName": "harga_satuan",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "jumlah",
+              "displayName": "jumlah",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "nama_proyek_lokasi",
+              "displayName": "nama_proyek_lokasi",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        896,
+        32
+      ],
+      "id": "2ac538c7-b7b6-4e1f-872c-6b4dfba7db31",
+      "name": "pre_purchase_order",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "XwOtRk7TX2Alk9L4",
+          "name": "Google Sheets account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Project Manager": {
+      "main": [
+        [
+          {
+            "node": "APPROVAL OR NOT",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Direktur Operasional": {
+      "main": [
+        [
+          {
+            "node": "APPROVAL OR NOT1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Kirim pesan ke Nama Peminta": {
+      "main": [
+        [
+          {
+            "node": "Nominal Pemesanan",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "APPROVAL OR NOT": {
+      "main": [
+        [
+          {
+            "node": "pre_purchase_order",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Kirim pesan ke Nama Peminta1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "APPROVAL OR NOT1": {
+      "main": [
+        [
+          {
+            "node": "pre_purchase_order",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Kirim pesan ke Nama Peminta2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Nominal Pemesanan": {
+      "main": [
+        [
+          {
+            "node": "Project Manager",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Direktur Operasional",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "pre_purchase_order": {
+      "main": [
+        [
+          {
+            "node": "email penugasan pembelian (Purchase Order)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "6495e7de-a631-434e-a602-231b7f8ecf9c",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "80e87bb08e453b0268b6a004795e642b4f65d6aaee5e89e3e2cbcbf6df8cb9bc"
+  },
+  "nodeGroups": [],
+  "id": "VwuhWZQPeieSvCcr",
+  "tags": []
+}
